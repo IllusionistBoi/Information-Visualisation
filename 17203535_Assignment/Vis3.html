@@ -1,0 +1,115 @@
+<html>
+<head>
+    <title> Surabhi Agarwal - Information Visualization assignment </title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+</head>
+<body>
+    <table style="width: 850px" cellspacing="5" cellpadding="5">
+    <tbody>
+    <tr>
+    <td style="width: 200px; vertical-align: top;"><strong>Name:&nbsp;</strong></td>
+    <td style="vertical-align: top;">Surabhi Agarwal</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Student Number:</strong></td>
+    <td style="vertical-align: top;">17203535</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Dataset description:</strong></td>
+    <td style="vertical-align: top;">
+    <p><a href="https://github.com/Surabhi98/Coffee-Dataset" target="_blank" rel="noopener">Coffee Quality Dataset</a>.</p>
+    <p>This data set contains information about two different species of coffee i.e Arabica and Robusta. It explains different attributes for each coffee like country of origin, variety, color, acidity, region, aftertaste and many more. I would be using the Arabica dataset to make necessary visualizations for my assignment.</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Initial questions</strong></td>
+    <td style="vertical-align: top;">How does the aftertaste of each coffee vary for different varities of coffee? Is there any median for this value?</td>
+    </tr>
+    </tbody>
+    </table>
+    <hr />
+    <br/>
+  <div id="vis" align="center"></div><br/>
+    <hr />
+<table style="width: 850px;" cellspacing="5" cellpadding="5">
+<tbody>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Description:&nbsp;</strong></td>
+<td style="vertical-align: top;">This chart is a layered chart. The first layer shows how every variety of coffee varies by it's aftertaste value. The second layer shows the median of the aftertaste values represented by a red dot. The blue ticks and the density of the ticks represent how strong the afterstaste of the coffee is. </td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Insight:</strong></td>
+<td style="vertical-align: top;"> The chart shows us that most of the coffee flavors for Arabica coffee have aftertaste ranging from 6-8, which means they are neutral. We can also observe that some coffees like Catual and Caturra could have a very strong aftertaste. The tast of the coffees is impacted by a variety of reasons like how the beans were roasted, which country it originates from, what altitude, moisture etc. <p/>
+  <a href="https://www.javapresse.com/blogs/enjoying-coffee/how-to-taste-coffee-aftertaste">This article on coffee aftertaste</a> clearly describes how a coffee's aftertaste is formed. It clearly confirms that the aftertaste of coffees depends upon it's acidity, sweetness, bitterness, mouthfeel and flavor.
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Design considerations</strong></td>
+<td style="vertical-align: top;"> I have used a layered chart so that I can clearly observe what is the median value of aftertaste for each kind of coffee, represented by a red dot <p/>
+Alternative visualisations of distributions (box plots, bar charts) could make a similar point but since we cannot perform a distinct layering on such charts, I preferred to go for the layered chart.
+</td> </tr>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Data filtering and transformation:&nbsp;</strong></td>
+<td style="vertical-align: top;">Only varities having aftertaste greater than 4 is shown so that we are able to observe the pattern better. Also, the layered chart has taken into account the median of the aftertaste as an aggregate.</td>
+</tr>
+</tbody>
+</table>
+  <script type="text/javascript">
+    var yourVlSpec =  
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/jldbc/coffee-quality-database/master/data/arabica_ratings_raw.csv",
+    "format": {"type": "csv"}
+  },
+  "description": "A layered chart showing the varities of Arabica Coffee and how it varies by aftertaste filtered by the color of the coffee and the variety of each coffee (seen when hovering over the graph). The red dots represent the median of the aftertaste specific for each kind of coffee",
+  "title": {
+    "text": "Arabica Coffee Variety vs Aftertaste",
+    "anchor": "middle",
+    "fontSize": 15
+  },
+  "transform": [{"filter": {"field": "Aftertaste", "gte": 4}}
+  
+  
+  ],
+  "repeat": {"row": ["Aftertaste"]},
+  "spec": {
+    "layer": [
+      {
+        "mark": "tick",
+        "encoding": {
+          "x": {
+            "field": {"repeat": "row"},
+            "type": "quantitative",
+            "scale": {"domain": [4, 9]}
+          },
+          "y": {"field": "Variety", "type": "nominal"},
+          "color": {
+            "field": "Aftertaste",
+            "type": "quantitative"
+            
+          }
+        }
+      },
+      {
+        "mark": {"type": "circle", "color": "#f46060"},
+        "encoding": {
+          "y": {"field": "Variety", "type": "nominal"},
+          "x": {
+            "field": {"repeat": "row"},
+            "type": "quantitative",
+            "aggregate": "median"
+          }
+        }
+      }
+    ]
+  }
+}
+
+        vegaEmbed("#vis", yourVlSpec);
+        document.getElementById("vis").style.padding = "20px 30px 20px 75px";
+  </script>
+</body>
+</html>

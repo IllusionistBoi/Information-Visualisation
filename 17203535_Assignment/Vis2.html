@@ -1,0 +1,182 @@
+<html>
+<head>
+    <title> Surabhi Agarwal - Information Visualization assignment </title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+</head>
+<body>
+    <table style="width: 850px" cellspacing="5" cellpadding="5">
+    <tbody>
+    <tr>
+    <td style="width: 200px; vertical-align: top;"><strong>Name:&nbsp;</strong></td>
+    <td style="vertical-align: top;">Surabhi Agarwal</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Student Number:</strong></td>
+    <td style="vertical-align: top;">17203535</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Dataset description:</strong></td>
+    <td style="vertical-align: top;">
+    <p><a href="https://github.com/Surabhi98/Coffee-Dataset" target="_blank" rel="noopener">Coffee Quality Dataset</a>.</p>
+    <p>This data set contains information about two different species of coffee i.e Arabica and Robusta. It explains different attributes for each coffee like country of origin, variety, color, acidity, region, aftertaste and many more. I would be using this dataset to make necessary visualizations for my assignment.</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Initial questions</strong></td>
+    <td style="vertical-align: top;">How does the Aroma, Acidity and Flavor vary for each kind of coffee as a function of these 3 attributes?</td>
+    </tr>
+    </tbody>
+    </table>
+    <hr />
+  <div id="vis" align="center"></div>
+  <script type="text/javascript">
+    var yourVlSpec =        {
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "repeat": {
+      "row": ["Aroma", "Flavor", "Acidity"],
+      "column": ["Acidity", "Flavor", "Aroma"]
+    },
+    "title": {
+      "text": "Arabica Coffee Aroma, Acidity and Flavor Binned heatmaps",
+      "anchor": "middle",
+      "fontSize": 18
+    },
+    "description": "A binned heatmap showing how Aroma, Acidity and Flavor vary as a function of each other for Arabica Coffee filtered by Flavor, Aroma and Acidity for each variety of Arabica coffee.",
+    "spec": {
+      "data": {
+        "url": "https://raw.githubusercontent.com/jldbc/coffee-quality-database/master/data/arabica_ratings_raw.csv",
+        "format": {"type": "csv"}
+      },
+      "transform": [
+      {"filter": "datum.Aroma > 0"}, 
+      {"filter": "datum.Acidity > 0"},
+      {"filter": "datum.Flavor > 0"}
+       ],
+      "mark": "rect",
+      "selection": {
+        "brush": {
+          "type": "interval",
+          "resolve": "union",
+          "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+          "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+          "zoom": "wheel![event.shiftKey]"
+        },
+        "grid": {
+          "type": "interval",
+          "resolve": "global",
+          "bind": "scales",
+          "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+          "zoom": "wheel![!event.shiftKey]"
+        }
+      },
+      "encoding": {
+        "x": {
+          "field": {"repeat": "column"},
+          "type": "quantitative",
+          "scale": {"domain": [5.5, 9]},
+          "bin": {"extent": [5, 9], "step": 0.10}
+        },
+        "y": {
+          "field": {"repeat": "row"},
+          "type": "quantitative",
+          "axis": {"minExtent": 30},
+          "scale": {"domain": [5.5, 9]},
+          "bin": {"extent": [5, 9], "step": 0.10}
+        },
+        "color": {
+          "condition": {
+            "selection": "brush",
+            "field": "Variety",
+            "type": "nominal",
+        "scale":{"scheme":"viridis"}
+          },
+          "value": "grey"
+        },
+        "tooltip": {"field": "Variety", "type": "nominal"}
+      }
+    }
+  }
+        vegaEmbed("#vis", yourVlSpec);
+        document.getElementById("vis").style.padding = "20px 30px 20px 75px";
+  </script>
+    <hr />
+
+<div id="vis2" align="center"></div>
+  <script type="text/javascript">
+    var yourVlSpec =          {
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/Surabhi98/Coffee-Dataset/master/arabica_ratings_raw.csv",
+    "format": {"type": "csv"}
+  },
+  "description": "A binned heatmap showing how the pH (Acidity) of Arabica coffee in this case varies by aroma filtered by the Aroma and Acidity of each variety of coffee.",
+  "title": {
+    "text": "Arabica Coffee Acidity vs Aroma",
+    "anchor": "middle",
+    "fontSize": 18,
+    "offset": 20
+  },
+  "width": 400,
+  "height": 400,
+  "transform": [{"filter": "datum.Aroma > 0"}, {"filter": "datum.Acidity > 0"}],
+  "mark": {"type": "rect"},
+  "encoding": {
+    "y": {
+      "field": "Acidity",
+      "type": "quantitative",
+      "scale": {"zero": false},
+      "axis": {"grid": false},
+      "bin": {"extent": [5, 9], "step": 0.1}
+    },
+    "x": {
+      "field": "Aroma",
+      "type": "quantitative",
+      "scale": {"zero": false},
+      "axis": {"grid": false},
+      "bin": {"extent": [5, 9], "step": 0.1}
+    },
+    "color": {
+      "field": "Variety",
+      "type": "nominal",
+        "scale":{"scheme":"viridis"}
+    },
+    "tooltip": {"field": "Variety", "type": "nominal"}
+  }
+}
+
+      vegaEmbed("#vis2", yourVlSpec);
+        document.getElementById("vis2").style.padding = "30px 30px 20px 75px";
+  </script>
+    <hr />
+
+
+<table style="width: 850px;" cellspacing="5" cellpadding="5">
+<tbody>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Description:&nbsp;</strong></td>
+<td style="vertical-align: top;">These binned heatmaps show the Acidity, flavor and aroma of different coffees and how they vary as a function of each other. Each point represents different variety of Arabica coffee denoted by the viridis vega lite color scheme.</td>
+</tr>
+
+<tr>
+<td style="vertical-align: top;"><strong>Insight:</strong></td>
+<td style="vertical-align: top;"> In the first binned heatmap, we have multiple small visualizations, each showing how Aroma varies across Acidity, Flavor and itself, followed by how Flavor varies with Acidity, itself and Aroma and finally we have the same for Acidity. <p/>
+  I observe using my binned heatmaps that the darker colored coffees represented here like Caturra, Bourbon and Catual have a more varied trend in terms of their flavor, aroma and acidity on a scale of 5.5-9. In terms of further analysis, I would be taking into account the Acidty and Aroma chart. Over here, the acidity of the coffee means how the coffee tastes in terms of pH values. <a href="https://www.thekitchn.com/whats-the-deal-with-acid-in-coffee-224482">This article on coffee acidity</a> makes it clear for us that coffee tastes a certain due to multiple natural acids peresent in it.<p/>
+  Looking at our second binned heatmap, we can see the trend between the acidity of the coffee and the Aroma of the coffee clearly. In this case, <a href="https://varieties.worldcoffeeresearch.org/varieties/caturra">Caturra Coffee</a> is an outlier because of it's varied nature of being highly acidic at certain points and being neutral/basic at certain points (depending on the year of it's harvest). The second chart specific to Acidity and Aroma explains our observation clearly </td>
+
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Design considerations</strong></td>
+<td style="vertical-align: top;"> I have used  <a href="https://en.wikipedia.org/wiki/Heat_map">Binned Heatmaps</a> as it is a very effective way to represent the distribution of the data and since our data has a variety of coffee, it's easier to make out the difference and oberve the trend.I have also encoded coffee variety in tooltips so it is possible to hover over a point to see the associated coffee variety.<p/>
+As an alternative to the binned heatmpas, I considered <a href="https://www.khanacademy.org/math/statistics-probability/describing-relationships-quantitative-data/introduction-to-scatterplots/a/scatterplots-and-correlation-review">Scatter Plots</a>, but since scatterplots resulted in overplotting, I avoided using them for this particular visualization.
+ </td></tr>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Data filtering and transformation:&nbsp;</strong></td>
+<td style="vertical-align: top;">Only values of Acidity, Aroma and Flavor which are greater than 0 are shown in the charts. The color scheme, I have chosen is Viridis from Vega lite and each point represents the variety of the coffee represented by the tooltip. <p/>
+Also, I have performed a selection on my first plot to make the visualization interactive</a>. </td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

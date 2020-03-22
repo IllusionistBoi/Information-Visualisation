@@ -1,0 +1,217 @@
+<html>
+<head>
+    <title> Surabhi Agarwal - Information Visualization assignment </title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+</head>
+<body>
+    <table style="width: 850px" cellspacing="5" cellpadding="5">
+    <tbody>
+    <tr>
+    <td style="width: 200px; vertical-align: top;"><strong>Name:&nbsp;</strong></td>
+    <td style="vertical-align: top;">Surabhi Agarwal</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Student Number:</strong></td>
+    <td style="vertical-align: top;">17203535</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Dataset description:</strong></td>
+    <td style="vertical-align: top;">
+    <p><a href="https://github.com/Surabhi98/Coffee-Dataset" target="_blank" rel="noopener">Coffee Quality Dataset</a>.</p>
+    <p>This data set contains information about two different species of coffee i.e Arabica and Robusta. It explains different attributes for each coffee like country of origin, variety, color, acidity, region, aftertaste and many more. I would be using this dataset to make necessary visualizations for my assignment.</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Initial questions</strong></td>
+    <td style="vertical-align: top;">How many number of bags of coffee does each country produce?</td>
+    </tr>
+    </tbody>
+    </table>
+    <hr />
+  <div id="vis1" class="container"></div>
+  <script type="text/javascript">
+    var yourVlSpec =   {
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "description": "A bar chart showing the number of bags of Arabica Coffee produced by each country ranging from 50 to 45K bags of Arabica filtered by the color of the coffee and the variety of each coffee (seen when hovering over the graph)",
+    "data": {
+      "url": "https://raw.githubusercontent.com/jldbc/coffee-quality-database/master/data/arabica_ratings_raw.csv",
+      "format": {"type": "csv"}
+    },
+    "transform": [{"filter": {"field": "Number of Bags", "gte": 0}}],
+    "mark": "bar",
+    "title": {
+      "text": "Arabica Coffee Country of Origin vs Number of bags",
+      "anchor": "middle",
+      "fontSize": 18
+    },
+    "width": 500,
+    "height": 500,
+    "encoding": {
+      "y": {
+        "field": "Country of Origin",
+        "type": "nominal",
+        "axis": {
+          "title": "Country",
+          "labelFontSize": 12,
+          "titleFontSize": 15,
+          "titlePadding": 10
+        },
+        "sort": {
+          "field": "Number of Bags", 
+          "order": "descending",
+          "op": "count"
+        }
+      },
+      "x": {
+        "field": "Number of Bags",
+        "type": "quantitative",
+        "aggregate": "count",
+        "axis": {
+          "title": "Number of Bags",
+          "labelFontSize": 12,
+          "titleFontSize": 15,
+          "titlePadding": 10
+        }
+      },
+      "color": {
+        "field": "Color",
+        "type": "nominal",
+        "scale": {
+          "domain": ["", "Blue-Green", "Bluish-Green", "Green", "None"],
+          "range": ["#fd2eb3", "#0c9cee", "#81f5ff", "#1ee494", "#fb8d62"]
+        }
+      },
+      "tooltip": {"field": "Variety", "type": "nominal"}
+    },
+    "config": {"legend": {"orient": "bottom-right"}}
+  }
+
+        vegaEmbed("#vis1", yourVlSpec);
+  </script>
+    <hr />
+
+ <div id="vis2" class="container"></div>
+  <script type="text/javascript">
+    var yourVlSpec =      {
+      "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+        "description" : "A bar chart showing the number of bags of Robusta Coffee produced by each country ranging from 50 to 3K bags of Robusta coffee filtered by the color of the coffee and showing variety of each coffee (seen when hovering over the graph)",
+      "data": {
+        "url": "https://raw.githubusercontent.com/Surabhi98/Coffee-Dataset/master/robusta_ratings_raw.csv",
+        "format": {
+          "type": "csv"
+        }
+      },
+      "transform": [
+          {
+          "filter": {
+            "field": "Number of Bags",
+            "gte": 50 
+          }
+        }
+      ],
+      "mark": "bar",
+      "title": {
+        "text": "Robusta Coffee Country of Origin vs Number of bags",
+        "anchor": "middle",
+        "fontSize": 18
+      },
+
+      "width": 500,
+      "height": 200,
+      "encoding": {
+        "y": {
+          "field": "Country of Origin",
+          "type": "nominal",
+          "axis": {
+            "title": "Country",
+            "labelFontSize": 12,
+            "titleFontSize": 15,
+            "titlePadding": 10
+          },
+          "sort": {
+            "field": "Number of Bags",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "Number of Bags",
+          "type": "quantitative",
+          "axis": {
+            "title": "Number of Bags",
+            "labelFontSize": 12,
+            "titleFontSize": 15,
+            "titlePadding": 10
+          }
+        },
+        "color": {
+          "field": "Color",
+          "type": "nominal",
+           "scale": {
+        "domain": [
+          "",
+          "Blue-Green",
+          "Bluish-Green",
+          "Green",
+          "None"
+        ],
+        "range": [
+          "#fd2eb3",
+          "#0c9cee",
+          "#81f5ff",
+          "#1ee494",
+          "#fb8d62"
+        ]
+      }
+          
+        },
+        "tooltip":{
+        "field":"Variety",
+        "type": "nominal"
+      }
+      },
+      "config": {
+        "legend": {
+          "orient": "bottom-right"
+        }
+      }
+    }
+        vegaEmbed("#vis2", yourVlSpec);
+        document.getElementById("vis2").style.padding = "20px 10px 20px 75px";
+  </script>
+    <hr />
+
+
+
+<table style="width: 850px;" cellspacing="5" cellpadding="5">
+<tbody>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Description:&nbsp;</strong></td>
+<td style="vertical-align: top;">These bar charts show the relatonship between the Country of Origin and the number of bags produced per country. Each point represents the particular variety of coffee and these are colored according to the color of each kind of coffee. Hovering over the the graph will show the different varieties of coffee grown. <p/>
+For this visualization, I have analysed both Robusta and Arabica datasets.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Insight:</strong></td>
+<td style="vertical-align: top;"></a>After looking at the resulting visualization, we can see that Mexico is the highest producer of Arabica coffee, followed by Colombia, Gautemala and Brazil. Another interesting observation here is that Colombia produces the same kind of coffee i.e Caturra but it can be of different colors depending on the time of it's harvest, whereas Mexico produces a variety of coffees over the timespan. <p/>
+  <a href="https://espressocoffeeguide.com/gourmet-coffee/coffees-of-the-americas/mexican-coffee/" target="_blank" rel="noopener">A little insight on Mexican coffees</a> shows us how Mexican coffee ranges in terms of mouthfeel, taste and flavor and how Mexican coffee beans are produced. It is interesting to know the relation between Mexican and Gautemalan borders in this case, since a large variety of Chapias coffee is grown in that region. 
+  <a href="https://www.baristainstitute.com/behind-bean/colombian-coffee-grown-sunny-slopes-andes" target="_blank" rel="noopener">This article on Colombian Coffee</a> shows us how Colombian coffee is produced and why Colombia is the largest producer of Caturra Arabica Coffee. <p/>
+  Colombia’s 22 coffee growing regions can be divided into the northern, central and southern ones. Most of the coffee harvest is produced in the central and southern areas, while the main areas for organic production are the north and the south where the soil is naturally favourable to coffee farming. Organic production only accounts for a few per cent of the total, but its volume is growing strongly. Coffee originating from these areas has a medium-bodied mouthfeel, clean aroma and high acidity. I really liked this quote describing the flavors of Colombian coffee: <p/>
+  ”You can spot Colombian coffee on the basis of its characteristic flavours and acidity. In the south the flavours are citrusy, in the central region fruity and herbal and in the north there are traces of nuts and chocolate,” Koroknay-Pál describes. <p/> 
+  Looking at the Robusta chart, we can see that, it is clear that not many countries produce Robusta coffee and India is the largest producer of Robusta with 3000 bags of Robusta produced. It is also interesting to see that most of the coffee produced is green in color, but India produces, again all the different colors of coffee varying across the harvest season. <p/>
+  Another interesting observation is that even though Mexico is largest producer of Arabica coffee, it is not even among the top 3 producers of Robusta, whereas India is the smallest producer of Arabica coffee but the highest producer of Robusta, which explains us how altitudes and climate higely impact coffee production across different countries and regions. Another intresting point is that the total number of bags produced for Arabica on an avergae is much lesser than Robusta in these datasets.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Design considerations</strong></td>
+<td style="vertical-align: top;">I have used <a href="https://en.wikipedia.org/wiki/Bar_chart" target="_blank" rel="noopener">Bar charts</a>  as there are a very effective way to show the relationship betwen two quantitative variables, taking advantage of our ability to accurately perceive variation in horizontal position clearly and interpret the sorted data variables. I chose the color scheme to clearly identify different coffee colors i.e none, bluish green, green and blue green and also the colors not specified are denoted in pink. I chose to retain the null color value since removal of this value can affect the number of bags of coffee produced per country</a> I have also encoded coffee variety in tooltips so it is possible to hover over a point to see the associated coffee variety, also observing that the specific ticks in each bar can represent the coffee variety and when removed, it is seen as clean bar charts.<p/>The bar charts clearly represents the highest producers of coffee for both Robusta and Arabica and I believe this is the best way to visualize this information.<p/> However, I considered <a href="https://en.wikipedia.org/wiki/Heat_map" target="_blank" rel="noopener">Binned Heatmaps</a> as an alternative since heatmaps would have represented the various kinds of coffee for each country in a matrix way. However, since a bar chart can be sorted according to the highest numeber of coffee bags produced per country, I chose to finalize bar charts for my visualizations.</td>
+</tr>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Data filtering and transformation:&nbsp;</strong></td>
+<td style="vertical-align: top;">Only countries having number of coffee bags produced greater than 0 are shown for Arabica and only countries having coffee bags greater than 50 are shown for Robusta.This is because of limited data in the Robusta dataset and elimination of null values for the Arabica dataset.<p/>
+  I have also sorted the fields according to the Number of Bags produced per country in a descending manner having count as an aggregate.
+ Color over here represents the coffee color and tooltip is for the coffee variety.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
