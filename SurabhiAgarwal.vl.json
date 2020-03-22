@@ -1,0 +1,75 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/colmr/vis_class/master/London2012Vega.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+  "transform": [
+    {
+      "filter": "datum.Total > 0"
+    }
+  ],
+  "mark": "bar",
+  "title": {
+    "text": "Olympic Athletes - Sports vs Total Medals Won",
+    "anchor": "middle",
+    "fontSize": 24
+  },
+  "description": "A visualization to portray the number of total medals won for a particular sport by male and female sports person in the Olympics according to the data given to us. Also, the medals have been sorted in a descending order and the null values have been removed",
+  "width": 500,
+  "height": 500,
+  "encoding": {
+    "y": {
+      "field": "Sport",
+      "type": "nominal",
+      "scale": {
+        "zero": false
+      },
+      "axis": {
+        "title": "Sport",
+        "labelFontSize": 15,
+        "titleFontSize": 15,
+        "titlePadding": 10
+      },
+      "sort": {
+        "field": "Total",
+        "order": "descending"
+      }
+    },
+    "x": {
+      "field": "Total",
+      "type": "quantitative",
+      "axis": {
+        "title": "Total Medals",
+        "labelFontSize": 15,
+        "titleFontSize": 15,
+        "titlePadding": 10
+      }
+    },
+    "color": {
+      "field": "Sex",
+      "legend": {
+        "labelFontSize": 15,
+        "titleFontSize": 15
+      },
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "M",
+          "F"
+        ],
+        "range": [
+          "#fdd365",
+          "#fd2eb3"
+        ]
+      }
+    }
+  },
+  "config": {
+    "legend": {
+      "orient": "bottom-right"
+    }
+  }
+}
