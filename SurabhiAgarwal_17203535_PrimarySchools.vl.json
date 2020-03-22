@@ -1,0 +1,263 @@
+{
+  "markdownDescription": "Name : SURABHI AGARWAL; Student Number: 17203535 ",
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/colmr/vis_class/master/primary_schools.csv"
+  },
+  "title": {
+    "text": "Irish Primary School Explorer",
+    "anchor": "middle",
+    "fontSize": 28
+  },
+  "description": "An interactive ‘dashboard’ style visualisation to enable analysis and exploration of Ireland’s primary schools. I have made use of 3 different selections in this visualisation, namely county, sex and total_students",
+  "hconcat": [
+    {
+      "description": "The bar chart: The bar chart on the left shows the number of schools in each county. This is a stacked bar chart using the same color scheme as the map to indicate the sex of the school. Clicking on a county on the bar chart should filter the map on the right so that only schools from that county are shown. This should also update the chart on the bottom of the image",
+      "selection": {
+        "county": {
+          "type": "multi",
+          "fields": [
+            "County"
+          ]
+        }
+      },
+      "transform": [
+        {
+          "filter": {
+            "selection": "sex"
+          }
+        },
+        {
+          "filter": {
+            "selection": "total_students"
+          }
+        }
+      ],
+      "width": 130,
+      "height": 630,
+      "mark": "bar",
+      "encoding": {
+        "y": {
+          "field": "County",
+          "type": "nominal",
+          "axis": {
+            "title": "County",
+            "labelFontSize": 13,
+            "titleFontSize": 15
+          }
+        },
+        "x": {
+          "field": "Roll_No",
+          "aggregate": "count",
+          "type": "quantitative",
+          "axis": {
+            "title": "Number of Schools",
+            "labelFontSize": 13,
+            "titleFontSize": 15
+          }
+        },
+        "fillOpacity": {
+          "condition": {
+            "selection": "county",
+            "value": 1
+          },
+          "value": 0.4
+        },
+        "color": {
+          "field": "Sex",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Boys",
+              "Girls",
+              "Mixed"
+            ],
+            "range": [
+              "#00C7A9",
+              "#8101FA",
+              "#7a9bff"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "vconcat": [
+        {
+          "description": "The geographic chart to portray the statistics of the schools on the map of Ireland.",
+          "transform": [
+            {
+              "filter": {
+                "selection": "total_students"
+              }
+            },
+            {
+              "filter": {
+                "selection": "county"
+              }
+            }
+          ],
+          "width": 400,
+          "height": 500,
+          "layer": [
+            {
+              "data": {
+                "url": "https://raw.githubusercontent.com/colmr/vis_class/master/Ireland_custom_topjson.json",
+                "format": {
+                  "type": "topojson",
+                  "feature": "IRL_adm1"
+                }
+              },
+              "mark": {
+                "type": "geoshape",
+                "stroke": "white",
+                "fill": "lightgrey"
+              }
+            },
+            {
+              "mark": "circle",
+              "selection": {
+                "sex": {
+                  "type": "single",
+                  "fields": [
+                    "Sex"
+                  ],
+                  "bind": "legend"
+                }
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "Long",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "Lat",
+                  "type": "quantitative"
+                },
+                "color": {
+                  "field": "Sex",
+                  "legend": {
+                    "labelFontSize": 14,
+                    "titleFontSize": 16
+                  },
+                  "type": "nominal",
+                  "scale": {
+                    "domain": [
+                      "Boys",
+                      "Girls",
+                      "Mixed"
+                    ],
+                    "range": [
+                      "#00C7A9",
+                      "#8101FA",
+                      "#7a9bff"
+                    ]
+                  }
+                },
+                "size": {
+                  "field": "Total",
+                  "legend": {
+                    "labelFontSize": 14,
+                    "titleFontSize": 16
+                  },
+                  "type": "quantitative",
+                  "scale": {
+                    "type": "threshold",
+                    "domain": [
+                      251,
+                      501,
+                      750
+                    ],
+                    "range": [
+                      20,
+                      60,
+                      100,
+                      140
+                    ]
+                  }
+                },
+                "opacity": {
+                  "condition": {
+                    "selection": "sex",
+                    "value": 1
+                  },
+                  "value": 0.2
+                }
+              }
+            }
+          ]
+        },
+        {
+          "description": "The histogram chart: The chart at the bottom of the image is a histogram that shows the distribution of school sizes (in terms of student numbers).",
+          "transform": [
+            {
+              "filter": "datum.Total > 0"
+            },
+            {
+              "filter": {
+                "selection": "sex"
+              }
+            },
+            {
+              "filter": {
+                "selection": "county"
+              }
+            }
+          ],
+          "selection": {
+            "total_students": {
+              "type": "interval",
+              "encodings": [
+                "x"
+              ]
+            }
+          },
+          "mark": {
+            "type": "bar",
+            "color": "black"
+          },
+          "width": 400,
+          "height": 100,
+          "encoding": {
+            "x": {
+              "bin": {
+                "base": 20,
+                "nice": true,
+                "maxbins": 60,
+                "extent": [
+                  0,
+                  1000
+                ]
+              },
+              "field": "Total",
+              "type": "quantitative",
+              "axis": {
+                "title": "Number of Students",
+                "labelFontSize": 15,
+                "titleFontSize": 15
+              }
+            },
+            "y": {
+              "field": "County",
+              "type": "nominal",
+              "aggregate": "count",
+              "axis": {
+                "title": "Schools",
+                "labelFontSize": 15,
+                "titleFontSize": 15
+              }
+            },
+            "opacity": {
+              "condition": {
+                "selection": "total_students",
+                "value": 1
+              },
+              "value": 0.2
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "config": {}
+}
